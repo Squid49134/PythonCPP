@@ -1,8 +1,8 @@
 
-// Creating the library via command line:
+// Creating .so (linux) via command line:
 //   g++ -o FunctionsCPP.so -shared FunctionsCPP.cpp
 
-// To create library in visual studio:
+// Creating .dll (windows) in visual studio:
 //   Create dll project
 //   Change the build configuration to x64 NOTE THIS MUST BE DONE BEFORE DISABLING PRECOMPILED HEADERS OR YOU'll JUST HAVE TO DO IT AGAIN
 //   Disable precompiled headers, and delete all the nonsense VS creates like dllmain and pch.h make sure to delete both the headers and the source files
@@ -11,7 +11,9 @@
 
 
 // Functions to be added to the library, note extern "C" macro prevents the compiler from changing the function's name (which is done in C++ to handle overloading, but was not in C since overloading was not supported)
-#define EXPORT extern "C"
+//   __declspec(dllexport) is not necessary when building .so since linux libraries have all methods exposed by default.  It is necessary when building .dll since in windows libraries functions must be explicitly 
+//   exported to be visible by outside programs.
+#define EXPORT extern "C" __declspec(dllexport)
 
 EXPORT double AddCPP(double num1, double num2) {
     return num1 + num2;
